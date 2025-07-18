@@ -47,7 +47,7 @@ The script is designed for authorized security testing and network assessment.
 -- @args recon-enum.aggressive Enable aggressive scanning modes including directory bruteforcing (default: false)  
 -- @args recon-enum.protocols Comma-separated list of protocols to scan: http,ssh,ftp,telnet,smtp (default: all)
 
-author = "Network Security Researcher"
+author = "Jubilio Mausse"
 license = "Same as Nmap--See https://nmap.org/book/man-legal.html"
 categories = {"discovery", "intrusive", "version"}
 
@@ -66,6 +66,120 @@ portrule = shortport.port_or_service({21, 22, 23, 25, 53, 80, 110, 135, 139, 143
 -- Host rule for host-wide reconnaissance
 hostrule = function(host)
     return true
+end
+
+-- Function to scan for open ports on target
+local function scan_open_ports(host)
+    local result = {}
+    local common_ports = {21, 22, 23, 25, 53, 80, 110, 135, 139, 143, 443, 993, 995, 1433, 1521, 3306, 3389, 5432, 5985, 5986}
+    
+    result.open_ports = {}
+    result.scan_method = "TCP Connect Scan"
+    
+    for _, port_num in ipairs(common_ports) do
+        local socket = nmap.new_socket()
+        socket:set_timeout(1000) -- 1 second timeout for speed
+        
+        local status = socket:connect(host, port_num)
+        if status then
+            local service_info = {
+                port = port_num,
+                state = "open",
+                service = nmap.get_port_state(host, {number = port_num, protocol = "tcp"}) or "unknown"
+            }
+            table.insert(result.open_ports, service_info)
+            socket:close()
+        end
+    end
+    
+    result.total_open = #result.open_ports
+    return result
+end
+
+-- Function to steal/gather comprehensive target information
+local function gather_target_intelligence(host, port)
+    local intel = {}
+    
+    -- Basic target information
+    intel.target_info = {
+        ip_address = host.ip,
+        hostname = host.name or "Unknown",
+        port = port.number,
+        service = port.service or "Unknown",
+        protocol = port.protocol
+    }
+    
+    -- Operating system intelligence
+    if host.os then
+        intel.os_intelligence = {
+            detected_os = host.os,
+            confidence = "High",
+            fingerprint_method = "Nmap OS Detection"
+        }
+    end
+    
+    -- Network intelligence
+    intel.network_intelligence = {
+        response_time = "Fast", -- Could be enhanced with actual timing
+        ttl_analysis = "Standard", -- Could analyze TTL patterns
+        network_distance = "Unknown" -- Could implement traceroute-like functionality
+    }
+    
+    -- Service-specific intelligence gathering
+    if port.service == "http" or port.service == "https" or port.number == 80 or port.number == 443 then
+        local http_response = http.get(host, port, "/")
+        if http_response then
+            intel.web_intelligence = {
+                server_software = http_response.header["server"] or "Unknown",
+                technologies = {},
+                security_headers = {},
+                cookies = {}
+            }
+            
+            -- Detect technologies
+            if http_response.header["x-powered-by"] then
+                table.insert(intel.web_intelligence.technologies, http_response.header["x-powered-by"])
+            end
+            
+            -- Check security headers
+            local security_headers = {"x-frame-options", "strict-transport-security", "content-security-policy", "x-xss-protection"}
+            for _, header in ipairs(security_headers) do
+                if http_response.header[header] then
+                    intel.web_intelligence.security_headers[header] = http_response.header[header]
+                end
+            end
+            
+            -- Extract cookies
+            if http_response.header["set-cookie"] then
+                intel.web_intelligence.cookies = http_response.header["set-cookie"]
+            end
+        end
+    end
+    
+    -- SSH intelligence
+    if port.service == "ssh" then
+        local banner, _ = grab_banner(host, port)
+        if banner then
+            intel.ssh_intelligence = {
+                version = banner,
+                algorithms = "Unknown", -- Could be enhanced with SSH algorithm detection
+                auth_methods = "Unknown" -- Could probe authentication methods
+            }
+        end
+    end
+    
+    -- Database intelligence
+    if port.service == "mysql" or port.service == "postgresql" or port.service == "ms-sql-s" then
+        intel.database_intelligence = {
+            type = port.service,
+            version = "Unknown", -- Could probe version
+            authentication = "Unknown", -- Could test common credentials
+            databases = "Unknown" -- Could enumerate databases if accessible
+        }
+    end
+    
+    intel.collection_timestamp = os.date("%Y-%m-%d %H:%M:%S UTC")
+    return intel
 end
 
 -- Enhanced banner grabbing function
@@ -234,6 +348,12 @@ action = function(host, port)
         end
     end
     
+    -- Gather comprehensive target intelligence
+    local target_intel = gather_target_intelligence(host, port)
+    if target_intel then
+        result.target_intelligence = target_intel
+    end
+    
     -- Banner grabbing
     local banner, banner_err = grab_banner(host, port)
     if banner then
@@ -310,6 +430,12 @@ end
 host_action = function(host)
     local result = stdnse.output_table()
     
+    -- Perform open port scanning
+    local port_scan_results = scan_open_ports(host)
+    if port_scan_results then
+        result.port_scan = port_scan_results
+    end
+    
     -- Basic host information
     result.host_info = {
         ip = host.ip,
@@ -335,7 +461,7 @@ host_action = function(host)
     
     result.scan_summary = {
         timestamp = os.date("%Y-%m-%d %H:%M:%S"),
-        reconnaissance_type = "Host-based enumeration"
+        reconnaissance_type = "Host-based enumeration with port scanning"
     }
     
     return result

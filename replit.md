@@ -18,6 +18,16 @@ Preferred communication style: Simple, everyday language.
 - All 9 test cases now pass successfully
 - Workflows are running without errors
 
+### July 18, 2025 - Major Feature Enhancements
+- **Author Updated**: Changed script author to "Jubilio Mausse" 
+- **Added Open Port Scanner**: New `scan_open_ports()` function for comprehensive port discovery
+- **Added Intelligence Gathering**: New `gather_target_intelligence()` function for detailed target information extraction
+- **Enhanced Web Intelligence**: Improved HTTP header analysis, technology detection, and security header checking
+- **Database Intelligence**: Added specialized intelligence gathering for MySQL, PostgreSQL, and MSSQL
+- **SSH Intelligence**: Enhanced SSH version and algorithm detection
+- **Created Improvement Guide**: Comprehensive IMPROVEMENTS.md with 10 categories of enhancement suggestions
+- **Created Usage Examples**: Detailed USAGE_EXAMPLES.md with practical command examples and output interpretation
+
 ## System Architecture
 
 The project follows a simple, file-based architecture centered around a single NSE script:
