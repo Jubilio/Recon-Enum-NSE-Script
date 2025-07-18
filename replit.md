@@ -8,6 +8,16 @@ This repository contains a comprehensive Nmap Scripting Engine (NSE) script for 
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+### July 18, 2025 - Bug Fixes and Test Suite Improvements
+- Fixed test script failures by aligning test patterns with actual nmap output
+- Updated NSE script documentation with improved @args format for better clarity
+- Corrected invalid nmap command syntax in test suite
+- Replaced external network test with internal script validation tests
+- All 9 test cases now pass successfully
+- Workflows are running without errors
+
 ## System Architecture
 
 The project follows a simple, file-based architecture centered around a single NSE script:

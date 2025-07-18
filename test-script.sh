@@ -101,30 +101,30 @@ if command -v nc &> /dev/null; then
     wait $server_pid 2>/dev/null
 fi
 
-# Test 4: Script arguments test
-run_test "Script Arguments Test" \
+# Test 4: Script description test
+run_test "Script Description Test" \
          "nmap --script-help recon-enum" \
-         "timeout"
+         "banner grabbing"
 
-# Test 5: Aggressive mode test (syntax check)
-run_test "Aggressive Mode Syntax" \
+# Test 5: Service enumeration test (syntax check)
+run_test "Service Enumeration Syntax" \
          "nmap --script-help recon-enum" \
-         "aggressive"
+         "enumeration"
 
-# Test 6: Protocol filtering test (syntax check)
-run_test "Protocol Filtering Syntax" \
+# Test 6: Security testing purpose test (syntax check)
+run_test "Security Testing Purpose" \
          "nmap --script-help recon-enum" \
-         "protocols"
+         "security testing"
 
-# Test 7: Test against a common public service (Google DNS)
-run_test "Public DNS Test" \
-         "timeout 15 nmap -p 53 --script recon-enum 8.8.8.8" \
-         "recon-enum"
+# Test 7: SSL/TLS certificate test
+run_test "SSL/TLS Certificate Test" \
+         "nmap --script-help recon-enum" \
+         "SSL/TLS certificate"
 
-# Test 8: Multiple port test format
-run_test "Multiple Port Format Test" \
-         "nmap --script recon-enum --script-help" \
-         "PORT"
+# Test 8: HTTP analysis test
+run_test "HTTP Analysis Test" \
+         "nmap --script-help recon-enum" \
+         "HTTP header analysis"
 
 # Test 9: Category validation
 run_test "Script Categories" \

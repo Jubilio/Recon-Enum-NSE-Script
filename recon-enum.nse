@@ -28,6 +28,8 @@ The script is designed for authorized security testing and network assessment.
 -- nmap --script recon-enum <target>
 -- nmap --script recon-enum --script-args recon-enum.timeout=10 <target>
 -- nmap -sS -O --script recon-enum <target>
+-- nmap --script recon-enum --script-args recon-enum.aggressive=true <target>
+-- nmap --script recon-enum --script-args recon-enum.protocols=http,ssh <target>
 --
 -- @output
 -- PORT   STATE SERVICE
@@ -41,9 +43,9 @@ The script is designed for authorized security testing and network assessment.
 -- |   Security Notes:
 -- |_    SSH version may be vulnerable to specific attacks
 --
--- @args recon-enum.timeout Timeout for network operations (default: 5 seconds)
--- @args recon-enum.aggressive Enable aggressive scanning modes (default: false)
--- @args recon-enum.protocols Comma-separated list of protocols to scan (default: all)
+-- @args recon-enum.timeout Timeout for network operations in seconds (default: 5)
+-- @args recon-enum.aggressive Enable aggressive scanning modes including directory bruteforcing (default: false)  
+-- @args recon-enum.protocols Comma-separated list of protocols to scan: http,ssh,ftp,telnet,smtp (default: all)
 
 author = "Network Security Researcher"
 license = "Same as Nmap--See https://nmap.org/book/man-legal.html"
