@@ -1,0 +1,262 @@
+Sample Output from Recon-Enum NSE Script
+========================================
+
+Example 1: SSH Service Reconnaissance
+-------------------------------------
+Nmap scan report for target.example.com (192.168.1.100)
+Host is up (0.0012s latency).
+
+PORT   STATE SERVICE
+22/tcp open  ssh
+| recon-enum:
+|   banner: SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.1
+|   ssh_version: 2.0
+|   service_info:
+|     service_type: SSH
+|     security_notes:
+|       Check for weak authentication
+|       Verify SSH version for vulnerabilities
+|   port_info:
+|     number: 22
+|     protocol: tcp
+|     service: ssh
+|     version: 8.9p1
+|   scan_timestamp: 2025-07-18 10:30:45
+|_  Note: SSH service detected - consider key-based authentication
+
+Example 2: Web Server Reconnaissance
+------------------------------------
+Nmap scan report for web.example.com (192.168.1.50)
+Host is up (0.0008s latency).
+
+PORT   STATE SERVICE
+80/tcp open  http
+| recon-enum:
+|   banner: HTTP/1.1 200 OK
+|   http_info:
+|     status: 200
+|     server: Apache/2.4.41 (Ubuntu)
+|     powered_by: PHP/7.4.3
+|     content_type: text/html; charset=UTF-8
+|     headers:
+|       server: Apache/2.4.41 (Ubuntu)
+|       x-powered-by: PHP/7.4.3
+|       x-frame-options: SAMEORIGIN
+|     discovered_paths:
+|       /robots.txt (200)
+|       /admin (403)
+|   service_info:
+|     service_type: HTTP
+|     security_notes:
+|       Review service configuration
+|       Check for default credentials
+|   security_recommendations:
+|     Consider implementing HTTPS
+|   port_info:
+|     number: 80
+|     protocol: tcp
+|     service: http
+|   scan_timestamp: 2025-07-18 10:32:15
+
+Example 3: HTTPS Service with SSL Information
+---------------------------------------------
+443/tcp open  https
+| recon-enum:
+|   http_info:
+|     status: 200
+|     server: nginx/1.18.0 (Ubuntu)
+|     headers:
+|       server: nginx/1.18.0 (Ubuntu)
+|       strict-transport-security: max-age=31536000; includeSubDomains
+|       content-security-policy: default-src 'self'
+|   ssl_info:
+|     ssl_enabled: true
+|   service_info:
+|     service_type: HTTP
+|     security_notes:
+|       Review service configuration
+|       Check for default credentials
+|   port_info:
+|     number: 443
+|     protocol: tcp
+|     service: https
+|   scan_timestamp: 2025-07-18 10:35:22
+
+Example 4: SMB Service Detection
+-------------------------------
+139/tcp open  netbios-ssn
+| recon-enum:
+|   smb_info:
+|     protocol: SMB/NetBIOS
+|     accessible: true
+|     note: SMB service detected - consider running smb-enum-* scripts
+|   service_info:
+|     service_type: Generic Service
+|     security_notes:
+|       Review service configuration
+|       Check for default credentials
+|   port_info:
+|     number: 139
+|     protocol: tcp
+|     service: netbios-ssn
+|   scan_timestamp: 2025-07-18 10:37:45
+
+Example 5: Database Service Reconnaissance
+------------------------------------------
+3306/tcp open  mysql
+| recon-enum:
+|   banner: 5.7.38-0ubuntu0.18.04.1
+|   service_info:
+|     service_type: MySQL
+|     security_notes:
+|       Check for default credentials
+|       Verify encryption in use
+|   port_info:
+|     number: 3306
+|     protocol: tcp
+|     service: mysql
+|     version: 5.7.38
+|   scan_timestamp: 2025-07-18 10:40:12
+
+Example 6: FTP Service Assessment
+---------------------------------
+21/tcp open  ftp
+| recon-enum:
+|   banner: 220 (vsFTPd 3.0.3)
+|   service_info:
+|     service_type: FTP
+|     security_notes:
+|       Check for anonymous access
+|       Verify if FTPS is used
+|   security_recommendations:
+|     Consider using SFTP or FTPS
+|   port_info:
+|     number: 21
+|     protocol: tcp
+|     service: ftp
+|   scan_timestamp: 2025-07-18 10:42:30
+
+Example 7: Multiple Services on Single Host
+-------------------------------------------
+Nmap scan report for server.example.com (192.168.1.10)
+Host is up (0.0015s latency).
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+| recon-enum:
+|   banner: SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.1
+|   ssh_version: 2.0
+|   service_info:
+|     service_type: SSH
+|     security_notes:
+|       Check for weak authentication
+|       Verify SSH version for vulnerabilities
+|   scan_timestamp: 2025-07-18 11:15:22
+
+80/tcp   open  http
+| recon-enum:
+|   http_info:
+|     status: 200
+|     server: Apache/2.4.41 (Ubuntu)
+|     headers:
+|       server: Apache/2.4.41 (Ubuntu)
+|   security_recommendations:
+|     Consider implementing HTTPS
+|   scan_timestamp: 2025-07-18 11:15:25
+
+443/tcp  open  https
+| recon-enum:
+|   ssl_info:
+|     ssl_enabled: true
+|   service_info:
+|     service_type: HTTP
+|   scan_timestamp: 2025-07-18 11:15:28
+
+3306/tcp open  mysql
+| recon-enum:
+|   service_info:
+|     service_type: MySQL
+|     security_notes:
+|       Check for default credentials
+|       Verify encryption in use
+|   scan_timestamp: 2025-07-18 11:15:31
+
+Example 8: Aggressive Mode Output
+---------------------------------
+80/tcp open  http
+| recon-enum:
+|   http_info:
+|     status: 200
+|     server: Apache/2.4.41 (Ubuntu)
+|     powered_by: PHP/7.4.3
+|     discovered_paths:
+|       /robots.txt (200)
+|       /admin (403)
+|       /.git (403)
+|       /backup (404)
+|     headers:
+|       server: Apache/2.4.41 (Ubuntu)
+|       x-powered-by: PHP/7.4.3
+|       x-frame-options: SAMEORIGIN
+|   security_recommendations:
+|     Consider implementing HTTPS
+|   scan_timestamp: 2025-07-18 11:20:45
+
+Example 9: Host-Level Reconnaissance
+------------------------------------
+Nmap scan report for target.example.com (192.168.1.100)
+Host is up (0.0012s latency).
+
+Pre-scan script results:
+| recon-enum:
+|   host_info:
+|     ip: 192.168.1.100
+|     name: target.example.com
+|     os: Linux 3.2 - 4.9
+|   dns_info:
+|     hostname: target.example.com
+|     note: Consider DNS enumeration for subdomains
+|   os_info:
+|     detected_os: Linux 3.2 - 4.9
+|     note: OS detection successful - consider OS-specific security checks
+|   scan_summary:
+|     timestamp: 2025-07-18 11:25:30
+|     reconnaissance_type: Host-based enumeration
+
+Example 10: Error Handling Output
+---------------------------------
+23/tcp open  telnet
+| recon-enum:
+|   banner_error: Connection failed: Connection refused
+|   service_info:
+|     service_type: Telnet
+|     security_notes:
+|       Unencrypted protocol
+|       Consider SSH alternative
+|   security_recommendations:
+|     Consider replacing Telnet with SSH
+|   port_info:
+|     number: 23
+|     protocol: tcp
+|     service: telnet
+|   scan_timestamp: 2025-07-18 11:30:15
+
+Command Examples Used for These Outputs
+=======================================
+
+1. Basic scan: nmap --script recon-enum target.example.com
+2. Aggressive: nmap --script recon-enum --script-args recon-enum.aggressive=true web.example.com
+3. Multiple ports: nmap -p 22,80,443,3306 --script recon-enum server.example.com
+4. With version detection: nmap -sV --script recon-enum target.example.com
+5. Custom timeout: nmap --script recon-enum --script-args recon-enum.timeout=10 target.example.com
+
+Notes on Output Interpretation
+==============================
+
+- Timestamps help track when information was gathered
+- Service-specific security notes provide targeted recommendations
+- Banner information aids in version identification
+- HTTP headers reveal technology stack details
+- SSL information indicates encryption capabilities
+- Error messages help identify connection issues or filtered ports
+- Security recommendations guide next steps in assessment

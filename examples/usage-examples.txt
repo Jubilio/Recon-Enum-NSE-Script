@@ -1,0 +1,160 @@
+Recon-Enum NSE Script - Usage Examples
+======================================
+
+1. Basic Host Reconnaissance
+----------------------------
+Command: nmap --script recon-enum 192.168.1.100
+Description: Performs basic reconnaissance on a single host
+Use Case: Initial target assessment
+
+2. Network Range Scanning
+-------------------------
+Command: nmap --script recon-enum 192.168.1.0/24
+Description: Scans entire subnet for reconnaissance
+Use Case: Network discovery and mapping
+
+3. Specific Port Targeting
+--------------------------
+Command: nmap -p 22,80,443 --script recon-enum example.com
+Description: Focuses reconnaissance on specific ports
+Use Case: Targeted service assessment
+
+4. Aggressive Reconnaissance
+----------------------------
+Command: nmap --script recon-enum --script-args recon-enum.aggressive=true target.com
+Description: Enables aggressive scanning with directory discovery
+Use Case: Detailed web application assessment
+
+5. Custom Timeout Configuration
+-------------------------------
+Command: nmap --script recon-enum --script-args recon-enum.timeout=10 target.com
+Description: Sets longer timeout for slow networks
+Use Case: Scanning over slow connections
+
+6. Protocol-Specific Scanning
+-----------------------------
+Command: nmap --script recon-enum --script-args recon-enum.protocols=http,ssh target.com
+Description: Only scans specified protocols
+Use Case: Focused service enumeration
+
+7. Combined with Version Detection
+----------------------------------
+Command: nmap -sV --script recon-enum target.com
+Description: Combines version detection with reconnaissance
+Use Case: Comprehensive service identification
+
+8. OS Detection Integration
+---------------------------
+Command: nmap -O --script recon-enum target.com
+Description: Includes OS fingerprinting with reconnaissance
+Use Case: Complete host profiling
+
+9. Stealth Scanning
+-------------------
+Command: nmap -sS --script recon-enum target.com
+Description: Uses SYN stealth scan with reconnaissance
+Use Case: Covert network assessment
+
+10. Multiple Script Combination
+-------------------------------
+Command: nmap --script recon-enum,banner,http-headers target.com
+Description: Runs multiple NSE scripts together
+Use Case: Comprehensive information gathering
+
+11. Fast Scan Mode
+------------------
+Command: nmap -F --script recon-enum target.com
+Description: Fast scan of common ports with reconnaissance
+Use Case: Quick assessment of standard services
+
+12. UDP Service Reconnaissance
+------------------------------
+Command: nmap -sU -p 53,161,123 --script recon-enum target.com
+Description: UDP reconnaissance on common services
+Use Case: UDP service enumeration
+
+13. Timing Template Usage
+-------------------------
+Command: nmap -T4 --script recon-enum target.com
+Description: Aggressive timing with reconnaissance
+Use Case: Fast network scanning
+
+14. Output Format Options
+-------------------------
+Command: nmap --script recon-enum -oN recon_results.txt target.com
+Command: nmap --script recon-enum -oX recon_results.xml target.com
+Description: Save results in different formats
+Use Case: Documentation and reporting
+
+15. Domain and Subdomain Scanning
+----------------------------------
+Command: nmap --script recon-enum example.com www.example.com mail.example.com
+Description: Scans multiple related hosts
+Use Case: Domain infrastructure assessment
+
+16. Web Application Focus
+-------------------------
+Command: nmap -p 80,443,8080,8443 --script recon-enum --script-args recon-enum.aggressive=true target.com
+Description: Web-focused reconnaissance with aggressive mode
+Use Case: Web application security testing
+
+17. Database Service Scanning
+-----------------------------
+Command: nmap -p 1433,3306,5432,1521 --script recon-enum target.com
+Description: Focuses on database services
+Use Case: Database infrastructure assessment
+
+18. Remote Access Service Scanning
+-----------------------------------
+Command: nmap -p 22,23,3389,5985,5986 --script recon-enum target.com
+Description: Scans remote access services
+Use Case: Remote access security assessment
+
+19. Mail Server Reconnaissance
+------------------------------
+Command: nmap -p 25,110,143,993,995 --script recon-enum mail.example.com
+Description: Mail server specific reconnaissance
+Use Case: Email infrastructure assessment
+
+20. Comprehensive Security Assessment
+-------------------------------------
+Command: nmap -sS -sV -O --script recon-enum,vuln,auth --script-args recon-enum.aggressive=true target.com
+Description: Complete security assessment with multiple script categories
+Use Case: Full penetration testing reconnaissance
+
+Advanced Usage Patterns
+========================
+
+Pattern 1: Staged Reconnaissance
+Command: nmap -sn 192.168.1.0/24 && nmap --script recon-enum --open 192.168.1.0/24
+Description: First discover live hosts, then perform detailed reconnaissance
+
+Pattern 2: Service-Specific Deep Dive
+Command: nmap -p 80,443 --script recon-enum,http-* target.com
+Description: Comprehensive web service assessment
+
+Pattern 3: Multi-Protocol Assessment
+Command: nmap --script recon-enum --script-args recon-enum.protocols=all target.com
+Description: Full protocol coverage reconnaissance
+
+Best Practices
+==============
+
+1. Always obtain proper authorization before scanning
+2. Start with non-aggressive scans to avoid detection
+3. Use appropriate timing templates for network conditions
+4. Save results for documentation and analysis
+5. Combine with other NSE scripts for comprehensive assessment
+6. Monitor network impact during scanning
+7. Respect rate limits and service availability
+8. Follow responsible disclosure for any findings
+
+Security Considerations
+======================
+
+- Only scan networks you own or have permission to test
+- Be aware of legal implications in your jurisdiction
+- Use stealth techniques when appropriate
+- Monitor for defensive responses during scanning
+- Maintain operational security during assessments
+- Document all activities for audit trails
